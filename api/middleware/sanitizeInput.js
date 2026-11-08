@@ -13,6 +13,8 @@
 // express-mongo-sanitize is not used because it tries to overwrite req.query,
 // which is read-only in Express 5 and crashes the app.
 
+const logger = require('../utils/logger');
+
 const BLOCKED_KEYS = ['__proto__', 'constructor', 'prototype'];
 
 // Deeply nested JSON is never needed by this API and can be used to
@@ -56,8 +58,17 @@ const sanitizeInput = (req, res, next) => {
     findProblem(req.query, '', 0);
 
   if (problem) {
-    // Server-side record of the blocked request (never sent to the client)
-    console.warn(`Blocked unsafe input on ${req.method} ${req.originalUrl}: ${problem.field}`);
+    // Server-side record of the blocked request (never sent to the client).
+    // The path and field name come from the attacker, so they are encoded
+    // first: a line break in them becomes harmless text (%0A) instead of a
+    // fake extra log line (log injection, CWE-117).
+    logger.warn('unsafe_input_blocked', {
+      event: 'input_sanitisation',
+      method: req.method,
+      path: encodeURIComponent(req.path).slice(0, 200),
+      field: encodeURIComponent(problem.field).slice(0, 100),
+      ip: req.ip
+    });
 
     return res.status(400).json({
       message: 'Request contains data that is not allowed',

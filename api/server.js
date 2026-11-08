@@ -13,7 +13,17 @@ const dns = require('dns');
 const gigRoutes = require('./routes/gigRoutes');
 const adminRoutes = require('./routes/adminRoutes')
 
-dns.setServers(['8.8.8.8', '8.8.4.4']);
+// Optional DNS servers, e.g. DNS_SERVERS=8.8.8.8,8.8.4.4 in .env. Some
+// Windows setups cannot resolve the MongoDB Atlas address without them.
+// Kept in configuration rather than hard-coded, so each environment
+// (local, Docker, CI) chooses its own resolvers.
+const dnsServers = (process.env.DNS_SERVERS || '')
+  .split(',')
+  .map((server) => server.trim())
+  .filter(Boolean);
+if (dnsServers.length > 0) {
+  dns.setServers(dnsServers);
+}
 
 const connectDb = require('./config/db');
 const authRoutes = require('./routes/authRoutes');

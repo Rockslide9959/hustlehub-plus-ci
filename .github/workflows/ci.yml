@@ -16,6 +16,8 @@ concurrency:
 permissions:
   contents: read
 
+# Runners are pinned to Ubuntu 24.04: ubuntu-latest moved to Ubuntu 26 in
+# October 2026, where Playwright cannot install its browser dependencies yet.
 env:
   NODE_VERSION: "22"
 
@@ -26,7 +28,7 @@ jobs:
   # ---------------------------------------------------------------------------
   install:
     name: Install dependencies
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
 
@@ -57,7 +59,7 @@ jobs:
   # ---------------------------------------------------------------------------
   backend-test:
     name: Backend tests (Jest + Newman)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: install
     env:
       PORT: "4000"
@@ -144,7 +146,7 @@ jobs:
   # ---------------------------------------------------------------------------
   frontend-test:
     name: Frontend tests (Jest + Playwright)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: install
     steps:
       - uses: actions/checkout@v4
@@ -197,7 +199,7 @@ jobs:
   # ---------------------------------------------------------------------------
   static-analysis:
     name: Static analysis (SonarJS, Semgrep, SonarCloud)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: install
     steps:
       - uses: actions/checkout@v4
@@ -287,7 +289,7 @@ jobs:
   # ---------------------------------------------------------------------------
   security-checks:
     name: Security checks
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: install
     permissions:
       contents: read
@@ -334,7 +336,7 @@ jobs:
   # ---------------------------------------------------------------------------
   build:
     name: Build artefacts
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [backend-test, frontend-test]
     steps:
       - uses: actions/checkout@v4
@@ -380,7 +382,7 @@ jobs:
   # ---------------------------------------------------------------------------
   docker-build:
     name: Docker build and smoke test
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: install
     steps:
       - uses: actions/checkout@v4
@@ -441,7 +443,7 @@ jobs:
   # ---------------------------------------------------------------------------
   pipeline-status:
     name: Pipeline status
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     if: always()
     needs: [install, backend-test, frontend-test, static-analysis, security-checks, build, docker-build]
     steps:

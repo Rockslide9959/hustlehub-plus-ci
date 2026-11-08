@@ -1,0 +1,34 @@
+# Dependencies
+node_modules/
+
+# Environment files (contain secrets — NEVER commit)
+.env
+.env.*
+!.env.example
+.env.docker
+
+# Build output
+dist/
+build/
+coverage/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS cruft
+.DS_Store
+Thumbs.db
+
+# Editor (optional — remove if team wants shared settings)
+.idea/
+
+# TLS certificates (self-signed dev certs)
+*.pem
+*.key
+*.cert
+*.crt
+server.key
+server.cert
+api/certs/certs/
+.vscode/

@@ -1,0 +1,99 @@
+
+> client@0.0.0 test:evidence
+> jest --verbose --reporters=default
+
+PASS src/pages/IncomePage.test.jsx
+  IncomePage
+    ΓêÜ shows the total income and each transaction (480 ms)
+    ΓêÜ explains when there is no income yet (63 ms)
+
+PASS src/pages/BookingsPage.test.jsx
+  BookingsPage
+    ΓêÜ a client sees the gigs they booked and who provides them (441 ms)
+    ΓêÜ a freelancer sees bookings of their gigs, using the freelancer endpoint (91 ms)
+    ΓêÜ explains when there are no bookings yet (60 ms)
+
+PASS src/api/client.test.js
+  apiRequest
+    ΓêÜ sends the token as a Bearer Authorization header (2 ms)
+    ΓêÜ returns the parsed JSON on success (6 ms)
+    ΓêÜ shows user-facing validation messages from the API (7 ms)
+    ΓêÜ never shows raw server error text for a 500 (2 ms)
+    ΓêÜ hides technical validation details (1 ms)
+    ΓêÜ treats a 401 on an authenticated request as an expired session (2 ms)
+    ΓêÜ explains rate limiting (429) (1 ms)
+    ΓêÜ handles the server being unreachable (1 ms)
+
+PASS src/pages/GigsPage.test.jsx
+  GigsPage
+    ΓêÜ shows the gigs returned by the API (373 ms)
+    ΓêÜ sends the search, category and sort to the API (520 ms)
+    ΓêÜ says so when nothing matches (153 ms)
+
+PASS src/pages/GigDetailPage.test.jsx
+  GigDetailPage
+    ΓêÜ a client can book a gig, which records a transaction (494 ms)
+    ΓêÜ shows the rate-limit message when booking too often (133 ms)
+    ΓêÜ the owner sees Edit and Delete but cannot book their own gig (86 ms)
+    ΓêÜ another freelancer cannot edit, delete or book someone else's gig (63 ms)
+    ΓêÜ the owner can delete their gig after confirming (222 ms)
+    ΓêÜ shows a friendly message when the gig does not exist (53 ms)
+
+PASS src/utils/validation.test.js
+  validateLogin
+    ΓêÜ requires email and password (1 ms)
+    ΓêÜ rejects a badly formatted email (1 ms)
+    ΓêÜ accepts valid input (1 ms)
+  getPasswordProblem
+    ΓêÜ rejects "Ab1" (1 ms)
+    ΓêÜ rejects "lowercase123" (1 ms)
+    ΓêÜ rejects "UPPERCASE123"
+    ΓêÜ rejects "NoNumbersHere" (1 ms)
+    ΓêÜ accepts a password that meets every rule (1 ms)
+  validateRegistration
+    ΓêÜ accepts valid input (1 ms)
+    ΓêÜ rejects mismatched passwords (1 ms)
+    ΓêÜ does not allow registering as admin (1 ms)
+    ΓêÜ rejects names longer than the database allows (3 ms)
+
+PASS src/pages/LoginPage.test.jsx (5.357 s)
+  LoginPage
+    ΓêÜ renders the email field, password field and submit button (377 ms)
+    ΓêÜ shows validation errors and does not call the API when submitted empty (156 ms)
+    ΓêÜ logs in and shows the dashboard (754 ms)
+    ΓêÜ shows a friendly message when the credentials are wrong (624 ms)
+
+PASS src/App.test.jsx
+  role-based navigation
+    ΓêÜ a freelancer sees the freelancer menu (102 ms)
+    ΓêÜ a client does not see freelancer-only links (70 ms)
+    ΓêÜ logging out clears the session and returns to the login page (149 ms)
+  route protection
+    ΓêÜ a logged-out user is sent to the login page (20 ms)
+    ΓêÜ a client typing a freelancer-only address sees "Not allowed" (30 ms)
+    ΓêÜ a freelancer can open the income page (37 ms)
+    ΓêÜ a client cannot open the create-gig page (24 ms)
+    ΓêÜ an expired session is treated as logged out (23 ms)
+    ΓêÜ after logging in, the user returns to the page they first asked for (582 ms)
+    ΓêÜ an unknown address shows "Page not found" (19 ms)
+
+PASS src/pages/RegisterPage.test.jsx (7.349 s)
+  RegisterPage
+    ΓêÜ only offers client and freelancer roles (385 ms)
+    ΓêÜ explains a weak password without calling the API (1289 ms)
+    ΓêÜ sends the registration and redirects to log in (1086 ms)
+    ΓêÜ shows the API message when the email is already registered (1160 ms)
+
+PASS src/pages/GigFormPage.test.jsx (8.399 s)
+  GigFormPage
+    ΓêÜ checks the form before calling the API (908 ms)
+    ΓêÜ creates a gig, sending the price as a number (1968 ms)
+    ΓêÜ shows field errors returned by the API (1839 ms)
+    ΓêÜ loads an existing gig for editing and saves the changes (233 ms)
+    ΓêÜ refuses to edit another freelancer's gig (33 ms)
+
+Test Suites: 10 passed, 10 total
+Tests:       57 passed, 57 total
+Snapshots:   0 total
+Time:        10.355 s, estimated 32 s
+Ran all test suites.

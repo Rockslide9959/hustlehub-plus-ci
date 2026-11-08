@@ -1,0 +1,3 @@
+NAME               IMAGE                     COMMAND                  SERVICE   CREATED         STATUS                     PORTS
+hustlehub-api      hustlehub-api:latest      "docker-entrypoint.s…"   api       6 minutes ago   Up 6 minutes (healthy)     4000/tcp
+hustlehub-client   hustlehub-client:latest   "/docker-entrypoint.…"   client    6 minutes ago   Up 5 minutes (unhealthy)   0.0.0.0:8080->80/tcp, [::]:8080->80/tcp

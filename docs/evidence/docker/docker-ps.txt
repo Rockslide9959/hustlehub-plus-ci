@@ -1,0 +1,3 @@
+CONTAINER ID   IMAGE                     COMMAND                  CREATED         STATUS                     PORTS                                     NAMES
+1d7749cbf6a5   hustlehub-client:latest   "/docker-entrypoint.…"   2 minutes ago   Up 2 minutes (unhealthy)   0.0.0.0:8080->80/tcp, [::]:8080->80/tcp   hustlehub-client
+aebad67cc2be   hustlehub-api:latest      "docker-entrypoint.s…"   2 minutes ago   Up 2 minutes (healthy)     4000/tcp                                  hustlehub-api

@@ -1,0 +1,17 @@
+{
+  "name": "hustlehub-static-analysis",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static code analysis for HustleHub+: SonarJS (the rule engine behind SonarQube/SonarCloud) and eslint-plugin-security, run over the API and the React client.",
+  "type": "module",
+  "scripts": {
+    "scan": "cd .. && eslint --config static-analysis/eslint.config.mjs --max-warnings 0 api client/src",
+    "report": "cd .. && eslint --config static-analysis/eslint.config.mjs --max-warnings 0 --format json --output-file static-analysis/reports/static-analysis-report.json api client/src"
+  },
+  "devDependencies": {
+    "eslint": "^9.39.0",
+    "eslint-plugin-security": "^4.2.1",
+    "eslint-plugin-sonarjs": "^4.2.2",
+    "globals": "^17.14.0"
+  }
+}

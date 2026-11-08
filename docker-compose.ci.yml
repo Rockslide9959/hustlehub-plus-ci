@@ -1,0 +1,33 @@
+# CI-only override. Used together with the main file:
+#   docker compose -f docker-compose.yml -f docker-compose.ci.yml up -d --build --wait
+# It adds a throw-away MongoDB replica set (the booking flow uses multi-document
+# transactions, which MongoDB only allows on a replica set) and publishes the API
+# port so the pipeline can smoke-test it directly. No secrets live in this file:
+# JWT_SECRET and ADMIN_PASSWORD are generated at run time by the workflow.
+services:
+  mongo:
+    image: mongo:7
+    command: ["--replSet", "rs0", "--bind_ip_all"]
+    networks:
+      - hustlehub-net
+    healthcheck:
+      # Initiates the replica set on first run, then reports healthy once it is PRIMARY.
+      test:
+        - CMD-SHELL
+        - >-
+          mongosh --quiet --eval
+          "try { rs.status() } catch (e) { rs.initiate({_id:'rs0',members:[{_id:0,host:'mongo:27017'}]}) };
+          if (!db.hello().isWritablePrimary) { quit(1) }"
+      interval: 5s
+      timeout: 10s
+      retries: 20
+      start_period: 5s
+
+  api:
+    depends_on:
+      mongo:
+        condition: service_healthy
+    environment:
+      MONGO_URI: mongodb://mongo:27017/hustlehub_ci?replicaSet=rs0
+    ports:
+      - "4000:4000"

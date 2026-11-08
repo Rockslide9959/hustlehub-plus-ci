@@ -1,0 +1,17 @@
+node_modules
+npm-debug.log
+.env
+.env.*
+!.env.example
+coverage
+dist
+test-evidence
+*.test.js
+*.test.jsx
+__tests__
+.git
+.gitignore
+README.md
+Dockerfile
+.dockerignore
+.vscode

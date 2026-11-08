@@ -1,0 +1,66 @@
+name: insy7314-2026-g3-insy7314-2026-hustlehub-plus
+services:
+  api:
+    restart: unless-stopped
+    container_name: hustlehub-api
+    environment:
+      ADMIN_PASSWORD: <redacted>
+      CLIENT_ORIGIN: http://localhost:8080
+      JWT_EXPIRES_IN: 1h
+      JWT_SECRET: <redacted>
+      MONGO_URI: mongodb+srv://thabosetsubi3_db_user:<redacted>@cluster0.k7ya4nf.mongodb.net/HustleHub?appName=Cluster0
+      NODE_ENV: production
+      PORT: "4000"
+      USE_HTTPS: "false"
+    image: hustlehub-api:latest
+    networks:
+      hustlehub-net: null
+    build:
+      context: C:\Users\emeris\Desktop\HustleHub\insy7314-2026-g3-insy7314-2026-hustlehub-plus\api
+      dockerfile: Dockerfile
+    healthcheck:
+      test:
+        - CMD
+        - wget
+        - --no-verbose
+        - --tries=1
+        - --spider
+        - http://localhost:4000/
+      timeout: 5s
+      interval: 30s
+      retries: 3
+      start_period: 15s
+  client:
+    restart: unless-stopped
+    container_name: hustlehub-client
+    image: hustlehub-client:latest
+    networks:
+      hustlehub-net: null
+    build:
+      context: C:\Users\emeris\Desktop\HustleHub\insy7314-2026-g3-insy7314-2026-hustlehub-plus\client
+      dockerfile: Dockerfile
+    depends_on:
+      api:
+        condition: service_healthy
+        required: true
+    healthcheck:
+      test:
+        - CMD
+        - wget
+        - --no-verbose
+        - --tries=1
+        - --spider
+        - http://localhost/
+      timeout: 5s
+      interval: 30s
+      retries: 3
+      start_period: 10s
+    ports:
+      - mode: ingress
+        target: 80
+        published: "8080"
+        protocol: tcp
+networks:
+  hustlehub-net:
+    name: insy7314-2026-g3-insy7314-2026-hustlehub-plus_hustlehub-net
+    driver: bridge

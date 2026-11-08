@@ -1,0 +1,1806 @@
+{
+  "info": {
+    "_postman_id": "e5ca8db4-5d19-44e6-ab6b-580d2fd8519a",
+    "name": "INSY7314HustleHub+",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "52531610"
+  },
+  "item": [
+    {
+      "name": "Register Client",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Registered (or already exists)\", () => pm.expect([201, 409]).to.include(pm.response.code));"
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"fullName\": \"Test Client\", \"email\": \"client.test@example.com\", \"password\": \"ClientPass123\", \"role\": \"client\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{url}}/api/auth/register",
+          "host": [
+            "{{url}}"
+          ],
+          "path": [
+            "api",
+            "auth",
+            "register"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Register Freelancer",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Registered (or already exists)\", () => pm.expect([201, 409]).to.include(pm.response.code));"
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"fullName\": \"Test Freelancer\",\r\n  \"email\": \"freelancer.test@example.com\",\r\n  \"password\": \"FreelancerPass123\",\r\n  \"role\": \"freelancer\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{url}}/api/auth/register",
+          "host": [
+            "{{url}}"
+          ],
+          "path": [
+            "api",
+            "auth",
+            "register"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Login Client",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));\r",
+              "pm.test(\"Login returns a token\", () => pm.expect(pm.response.json()).to.have.property(\"token\"));\r",
+              "pm.environment.set(\"clientToken\", pm.response.json().token);"
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"email\": \"client.test@example.com\", \"password\": \"ClientPass123\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{url}}/api/auth/login",
+          "host": [
+            "{{url}}"
+          ],
+          "path": [
+            "api",
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Login Freelancer",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));\r",
+              "pm.test(\"Login returns a token\", () => pm.expect(pm.response.json()).to.have.property(\"token\"));\r",
+              "pm.environment.set(\"freelancerToken\", pm.response.json().token);"
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"email\": \"freelancer.test@example.com\",\r\n  \"password\": \"FreelancerPass123\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{url}}/api/auth/login",
+          "host": [
+            "{{url}}"
+          ],
+          "path": [
+            "api",
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Login Wrong Password",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status is 401\", () => pm.response.to.have.status(401));\r",
+              "pm.test(\"No token is given\", () => pm.expect(pm.response.json()).to.not.have.property(\"token\"));"
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"email\": \"client.test@example.com\", \"password\": \"WrongPass123\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{url}}/api/auth/login",
+          "host": [
+            "{{url}}"
+          ],
+          "path": [
+            "api",
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Gig (Freelancer)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status is 201\", () => pm.response.to.have.status(201));\r",
+              "pm.test(\"Gig has an id\", () => pm.expect(pm.response.json().data).to.have.property(\"id\"));\r",
+              "pm.environment.set(\"gigId\", pm.response.json().data.id);"
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{freelancerToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"title\": \"Logo Design Package\", \"description\": \"I will design a professional logo with three concepts and two revisions.\", \"price\": 500, \"category\": \"Design\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{url}}/api/gigs",
+          "host": [
+            "{{url}}"
+          ],
+          "path": [
+            "api",
+            "gigs"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Gig as client (blocked)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status is 403\", () => pm.response.to.have.status(403));"
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"title\": \"Logo Design Package\", \"description\": \"I will design a professional logo with three concepts and two revisions.\", \"price\": 500, \"category\": \"Design\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{url}}/api/gigs",
+          "host": [
+            "{{url}}"
+          ],
+          "path": [
+            "api",
+            "gigs"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{clientToken}}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Browse Gigs",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));\r",
+              "pm.test(\"Returns a list of gigs\", () => pm.expect(pm.response.json().data).to.be.an(\"array\"));"
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{url}}/api/gigs",
+          "host": [
+            "{{url}}"
+          ],
+          "path": [
+            "api",
+            "gigs"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{clientToken}}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Update own Gig",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{freelancerToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PATCH",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"price\": 650}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{url}}/api/gigs/{{gigId}}",
+          "host": [
+            "{{url}}"
+          ],
+          "path": [
+            "api",
+            "gigs",
+            "{{gigId}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Book Gig (client)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status is 201\", () => pm.response.to.have.status(201));\r",
+              "pm.test(\"Transaction was created\", () => pm.expect(pm.response.json().transaction).to.be.an(\"object\"));"
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"gigId\": \"{{gigId}}\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{url}}/api/bookings",
+          "host": [
+            "{{url}}"
+          ],
+          "path": [
+            "api",
+            "bookings"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{clientToken}}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Book Gig as Freelancer (blocked)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status is 403\", () => pm.response.to.have.status(403));"
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"gigId\": \"{{gigId}}\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{url}}/api/bookings",
+          "host": [
+            "{{url}}"
+          ],
+          "path": [
+            "api",
+            "bookings"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{freelancerToken}}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Client's Bookings",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));"
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{url}}/api/bookings/my",
+          "host": [
+            "{{url}}"
+          ],
+          "path": [
+            "api",
+            "bookings",
+            "my"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{clientToken}}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Freelancer Income",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));\r",
+              "pm.test(\"Income includes the booking\", () => pm.expect(pm.response.json().totalIncome).to.be.at.least(650));"
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{url}}/api/transactions/income",
+          "host": [
+            "{{url}}"
+          ],
+          "path": [
+            "api",
+            "transactions",
+            "income"
+          ]
+        },
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{freelancerToken}}",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "NoSQL injection login",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status is 400\", () => pm.response.to.have.status(400));\r",
+              "pm.test(\"Injection is blocked\", () => pm.expect(pm.response.json().message).to.eql(\"Request contains data that is not allowed\"));"
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"email\": {\"$ne\": null}, \"password\": {\"$ne\": null}}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{url}}/api/auth/login",
+          "host": [
+            "{{url}}"
+          ],
+          "path": [
+            "api",
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Fake Token",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status is 401\", () => pm.response.to.have.status(401));"
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "authorization",
+            "value": "Bearer abc.def.ghi",
+            "type": "text",
+            "id": 0
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{url}}/api/gigs",
+          "host": [
+            "{{url}}"
+          ],
+          "path": [
+            "api",
+            "gigs"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Security Headers present",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));\r",
+              "pm.test(\"CSP header set\", () => pm.response.to.have.header(\"Content-Security-Policy\"));\r",
+              "pm.test(\"Clickjacking blocked\", () => pm.expect(pm.response.headers.get(\"X-Frame-Options\")).to.eql(\"DENY\"));\r",
+              "pm.test(\"X-Powered-By hidden\", () => pm.response.to.not.have.header(\"X-Powered-By\"));"
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{url}}/",
+          "host": [
+            "{{url}}"
+          ],
+          "path": [
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Too Many Failed Logins",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const tries = Number(pm.environment.get(\"rlTries\") || 0) + 1;\r",
+              "pm.environment.set(\"rlTries\", tries);\r",
+              "if (pm.response.code !== 429 && tries < 10) {\r",
+              "  postman.setNextRequest(pm.info.requestName);\r",
+              "} else {\r",
+              "  pm.environment.set(\"rlTries\", 0);\r",
+              "  pm.test(\"Status is 429\", () => pm.response.to.have.status(429));\r",
+              "  pm.test(\"Message says when to try again\", () => pm.expect(pm.response.json().message).to.include(\"try again\"));\r",
+              "  pm.test(\"Retry-After header set\", () => pm.response.to.have.header(\"Retry-After\"));\r",
+              "}"
+            ],
+            "type": "text/javascript",
+            "packages": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"email\": \"ratelimit.test@test.com\", \"password\": \"WrongPass123\"}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{url}}/api/auth/login",
+          "host": [
+            "{{url}}"
+          ],
+          "path": [
+            "api",
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Own Security Features",
+      "description": "Part 3: account lockout with progressive delay, and TOTP two-factor authentication. Uses throwaway accounts so the fixed test accounts are never locked or put behind 2FA.",
+      "item": [
+        {
+          "name": "Lockout - Register throwaway account",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "// A brand-new account every run, so the lock never blocks other tests",
+                  "pm.environment.set(\"lockoutEmail\", `lockout.${Date.now()}@test.com`);",
+                  "pm.environment.set(\"lockoutTries\", 0);"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status is 201\", () => pm.response.to.have.status(201));"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{url}}/api/auth/register",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "register"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"fullName\": \"Lockout Test\", \"email\": \"{{lockoutEmail}}\", \"password\": \"LockoutPass123\", \"role\": \"client\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Lockout - Wrong passwords lock the account",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Repeats this request: attempts 1-4 must be 401, attempt 5 must lock (423)",
+                  "const tries = Number(pm.environment.get(\"lockoutTries\") || 0) + 1;",
+                  "pm.environment.set(\"lockoutTries\", tries);",
+                  "if (tries < 5) {",
+                  "  pm.test(`Attempt ${tries} is refused with 401`, () => pm.response.to.have.status(401));",
+                  "  postman.setNextRequest(pm.info.requestName);",
+                  "} else {",
+                  "  pm.environment.set(\"lockoutTries\", 0);",
+                  "  pm.test(\"5th failure locks the account (423 Locked)\", () => pm.response.to.have.status(423));",
+                  "  pm.test(\"Message explains the lock\", () => pm.expect(pm.response.json().message).to.include(\"temporarily locked\"));",
+                  "  pm.test(\"First lock lasts 15 minutes\", () => pm.expect(pm.response.json().retryAfterSeconds).to.eql(900));",
+                  "  pm.test(\"Retry-After header set\", () => pm.response.to.have.header(\"Retry-After\", \"900\"));",
+                  "  pm.test(\"No token is given\", () => pm.expect(pm.response.json()).to.not.have.property(\"token\"));",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{url}}/api/auth/login",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"email\": \"{{lockoutEmail}}\", \"password\": \"WrongPass123\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2FA - Register throwaway account",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "pm.environment.set(\"tfaEmail\", `twofactor.${Date.now()}@test.com`);",
+                  "pm.environment.set(\"tfaLastStep\", -1);"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status is 201\", () => pm.response.to.have.status(201));"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{url}}/api/auth/register",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "register"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"fullName\": \"Two Factor Test\", \"email\": \"{{tfaEmail}}\", \"password\": \"TwoFactorPass123\", \"role\": \"client\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2FA - Login before 2FA (normal token)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Login returns a token\", () => pm.expect(pm.response.json()).to.have.property(\"token\"));",
+                  "pm.environment.set(\"tfaToken\", pm.response.json().token);"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{url}}/api/auth/login",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"email\": \"{{tfaEmail}}\", \"password\": \"TwoFactorPass123\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2FA - Status is off",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"2FA starts off\", () => pm.expect(pm.response.json().enabled).to.eql(false));"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tfaToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/api/auth/2fa/status",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "2fa",
+                "status"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2FA - Setup without token (blocked)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status is 401\", () => pm.response.to.have.status(401));"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{url}}/api/auth/2fa/setup",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "2fa",
+                "setup"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2FA - Setup returns QR code",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));",
+                  "const body = pm.response.json();",
+                  "pm.test(\"Returns a QR code image\", () => pm.expect(body.qrCode).to.match(/^data:image\\/png;base64,/));",
+                  "pm.test(\"Returns a 32-character Base32 setup key\", () => pm.expect(body.manualEntryKey).to.match(/^[A-Z2-7]{32}$/));",
+                  "pm.environment.set(\"tfaSecret\", body.manualEntryKey);"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tfaToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/api/auth/2fa/setup",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "2fa",
+                "setup"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2FA - Enable with wrong code (blocked)",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "// A fixed code: wrong unless 1 in a million bad luck",
+                  "pm.environment.set(\"tfaWrongCode\", \"000000\");"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status is 400\", () => pm.response.to.have.status(400));",
+                  "pm.test(\"Explains the code is not valid\", () => pm.expect(pm.response.json().message).to.include(\"not valid\"));"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tfaToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/api/auth/2fa/enable",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "2fa",
+                "enable"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"code\": \"{{tfaWrongCode}}\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2FA - Enable with bad format (blocked)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status is 400\", () => pm.response.to.have.status(400));",
+                  "pm.test(\"Points at the code field\", () => pm.expect(pm.response.json().errors[0].field).to.eql(\"code\"));"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tfaToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/api/auth/2fa/enable",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "2fa",
+                "enable"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"code\": \"12ab56\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2FA - Enable with valid code",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "// Makes a valid 6-digit code from the saved 2FA secret (like an authenticator app)",
+                  "const crypto = require('crypto-js');",
+                  "const base32ToHex = (base32) => {",
+                  "  const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';",
+                  "  let bits = '';",
+                  "  for (const char of base32.replace(/=+$/, '').toUpperCase()) {",
+                  "    bits += alphabet.indexOf(char).toString(2).padStart(5, '0');",
+                  "  }",
+                  "  let hex = '';",
+                  "  for (let i = 0; i + 8 <= bits.length; i += 8) {",
+                  "    hex += parseInt(bits.slice(i, i + 8), 2).toString(16).padStart(2, '0');",
+                  "  }",
+                  "  return hex;",
+                  "};",
+                  "const totpForStep = (secret, step) => {",
+                  "  const hmac = crypto.HmacSHA1(",
+                  "    crypto.enc.Hex.parse(step.toString(16).padStart(16, '0')),",
+                  "    crypto.enc.Hex.parse(base32ToHex(secret))",
+                  "  ).toString(crypto.enc.Hex);",
+                  "  const offset = parseInt(hmac.slice(-1), 16);",
+                  "  const value = parseInt(hmac.substr(offset * 2, 8), 16) & 0x7fffffff;",
+                  "  return String(value % 1000000).padStart(6, '0');",
+                  "};",
+                  "// The API refuses a code from a window that was already used, so wait for",
+                  "// a fresh 30-second window when needed (at most ~30 seconds)",
+                  "const lastStep = Number(pm.environment.get('tfaLastStep') || -1);",
+                  "const useStep = (step) => {",
+                  "  pm.environment.set('tfaCode', totpForStep(pm.environment.get('tfaSecret'), step));",
+                  "  pm.environment.set('tfaLastStep', step);",
+                  "};",
+                  "const nowStep = Math.floor(Date.now() / 30000);",
+                  "if (nowStep > lastStep) {",
+                  "  useStep(nowStep);",
+                  "} else {",
+                  "  const waitMs = (lastStep + 1) * 30000 - Date.now() + 1000;",
+                  "  console.log(`Waiting ${Math.ceil(waitMs / 1000)}s for a fresh 2FA code window`);",
+                  "  setTimeout(() => useStep(lastStep + 1), waitMs);",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"2FA is now on\", () => pm.expect(pm.response.json().enabled).to.eql(true));"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tfaToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/api/auth/2fa/enable",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "2fa",
+                "enable"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"code\": \"{{tfaCode}}\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2FA - Login returns challenge, not token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));",
+                  "const body = pm.response.json();",
+                  "pm.test(\"Asks for the 2FA code\", () => pm.expect(body.twoFactorRequired).to.eql(true));",
+                  "pm.test(\"Password alone gives NO login token\", () => pm.expect(body).to.not.have.property(\"token\"));",
+                  "pm.environment.set(\"tfaChallenge\", body.challengeToken);"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{url}}/api/auth/login",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"email\": \"{{tfaEmail}}\", \"password\": \"TwoFactorPass123\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2FA - Challenge token used as login token (blocked)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status is 401\", () => pm.response.to.have.status(401));"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tfaChallenge}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/api/auth/profile",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "profile"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2FA - Verify with wrong code (blocked)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status is 401\", () => pm.response.to.have.status(401));",
+                  "pm.test(\"No token is given\", () => pm.expect(pm.response.json()).to.not.have.property(\"token\"));"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{url}}/api/auth/2fa/verify",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "2fa",
+                "verify"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"challengeToken\": \"{{tfaChallenge}}\", \"code\": \"000000\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2FA - Verify with fake challenge (blocked)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status is 401\", () => pm.response.to.have.status(401));"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{url}}/api/auth/2fa/verify",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "2fa",
+                "verify"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"challengeToken\": \"not-a-real-token\", \"code\": \"123456\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2FA - Verify with valid code",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "// Makes a valid 6-digit code from the saved 2FA secret (like an authenticator app)",
+                  "const crypto = require('crypto-js');",
+                  "const base32ToHex = (base32) => {",
+                  "  const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';",
+                  "  let bits = '';",
+                  "  for (const char of base32.replace(/=+$/, '').toUpperCase()) {",
+                  "    bits += alphabet.indexOf(char).toString(2).padStart(5, '0');",
+                  "  }",
+                  "  let hex = '';",
+                  "  for (let i = 0; i + 8 <= bits.length; i += 8) {",
+                  "    hex += parseInt(bits.slice(i, i + 8), 2).toString(16).padStart(2, '0');",
+                  "  }",
+                  "  return hex;",
+                  "};",
+                  "const totpForStep = (secret, step) => {",
+                  "  const hmac = crypto.HmacSHA1(",
+                  "    crypto.enc.Hex.parse(step.toString(16).padStart(16, '0')),",
+                  "    crypto.enc.Hex.parse(base32ToHex(secret))",
+                  "  ).toString(crypto.enc.Hex);",
+                  "  const offset = parseInt(hmac.slice(-1), 16);",
+                  "  const value = parseInt(hmac.substr(offset * 2, 8), 16) & 0x7fffffff;",
+                  "  return String(value % 1000000).padStart(6, '0');",
+                  "};",
+                  "// The API refuses a code from a window that was already used, so wait for",
+                  "// a fresh 30-second window when needed (at most ~30 seconds)",
+                  "const lastStep = Number(pm.environment.get('tfaLastStep') || -1);",
+                  "const useStep = (step) => {",
+                  "  pm.environment.set('tfaCode', totpForStep(pm.environment.get('tfaSecret'), step));",
+                  "  pm.environment.set('tfaLastStep', step);",
+                  "};",
+                  "const nowStep = Math.floor(Date.now() / 30000);",
+                  "if (nowStep > lastStep) {",
+                  "  useStep(nowStep);",
+                  "} else {",
+                  "  const waitMs = (lastStep + 1) * 30000 - Date.now() + 1000;",
+                  "  console.log(`Waiting ${Math.ceil(waitMs / 1000)}s for a fresh 2FA code window`);",
+                  "  setTimeout(() => useStep(lastStep + 1), waitMs);",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Login returns a token\", () => pm.expect(pm.response.json()).to.have.property(\"token\"));",
+                  "pm.environment.set(\"tfaToken\", pm.response.json().token);"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{url}}/api/auth/2fa/verify",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "2fa",
+                "verify"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"challengeToken\": \"{{tfaChallenge}}\", \"code\": \"{{tfaCode}}\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2FA - Reused code (blocked)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Same code cannot be used twice (401)\", () => pm.response.to.have.status(401));"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{url}}/api/auth/2fa/verify",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "2fa",
+                "verify"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"challengeToken\": \"{{tfaChallenge}}\", \"code\": \"{{tfaCode}}\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2FA - Disable with wrong password (blocked)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status is 400\", () => pm.response.to.have.status(400));",
+                  "pm.test(\"Vague message\", () => pm.expect(pm.response.json().message).to.eql(\"Incorrect password or code.\"));"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tfaToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/api/auth/2fa/disable",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "2fa",
+                "disable"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"password\": \"WrongPass123\", \"code\": \"000000\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2FA - Disable with password and code",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "// Makes a valid 6-digit code from the saved 2FA secret (like an authenticator app)",
+                  "const crypto = require('crypto-js');",
+                  "const base32ToHex = (base32) => {",
+                  "  const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';",
+                  "  let bits = '';",
+                  "  for (const char of base32.replace(/=+$/, '').toUpperCase()) {",
+                  "    bits += alphabet.indexOf(char).toString(2).padStart(5, '0');",
+                  "  }",
+                  "  let hex = '';",
+                  "  for (let i = 0; i + 8 <= bits.length; i += 8) {",
+                  "    hex += parseInt(bits.slice(i, i + 8), 2).toString(16).padStart(2, '0');",
+                  "  }",
+                  "  return hex;",
+                  "};",
+                  "const totpForStep = (secret, step) => {",
+                  "  const hmac = crypto.HmacSHA1(",
+                  "    crypto.enc.Hex.parse(step.toString(16).padStart(16, '0')),",
+                  "    crypto.enc.Hex.parse(base32ToHex(secret))",
+                  "  ).toString(crypto.enc.Hex);",
+                  "  const offset = parseInt(hmac.slice(-1), 16);",
+                  "  const value = parseInt(hmac.substr(offset * 2, 8), 16) & 0x7fffffff;",
+                  "  return String(value % 1000000).padStart(6, '0');",
+                  "};",
+                  "// The API refuses a code from a window that was already used, so wait for",
+                  "// a fresh 30-second window when needed (at most ~30 seconds)",
+                  "const lastStep = Number(pm.environment.get('tfaLastStep') || -1);",
+                  "const useStep = (step) => {",
+                  "  pm.environment.set('tfaCode', totpForStep(pm.environment.get('tfaSecret'), step));",
+                  "  pm.environment.set('tfaLastStep', step);",
+                  "};",
+                  "const nowStep = Math.floor(Date.now() / 30000);",
+                  "if (nowStep > lastStep) {",
+                  "  useStep(nowStep);",
+                  "} else {",
+                  "  const waitMs = (lastStep + 1) * 30000 - Date.now() + 1000;",
+                  "  console.log(`Waiting ${Math.ceil(waitMs / 1000)}s for a fresh 2FA code window`);",
+                  "  setTimeout(() => useStep(lastStep + 1), waitMs);",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"2FA is now off\", () => pm.expect(pm.response.json().enabled).to.eql(false));"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tfaToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/api/auth/2fa/disable",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "2fa",
+                "disable"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\"password\": \"TwoFactorPass123\", \"code\": \"{{tfaCode}}\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "2FA - Status is off again",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"2FA is off\", () => pm.expect(pm.response.json().enabled).to.eql(false));",
+                  "// Tidy up: the test secret is not left in the environment",
+                  "pm.environment.unset(\"tfaSecret\");",
+                  "pm.environment.unset(\"tfaCode\");"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tfaToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{url}}/api/auth/2fa/status",
+              "host": [
+                "{{url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "2fa",
+                "status"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

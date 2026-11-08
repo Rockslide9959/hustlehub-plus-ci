@@ -1,0 +1,104 @@
+name: Autograde
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - "submit/*"
+
+  pull_request:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  statuses: write
+  pull-requests: write
+
+jobs:
+  backend-tests:
+    name: Backend Jest Tests
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./api
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: api/package-lock.json
+
+      - name: Install backend dependencies
+        run: npm ci
+
+      - name: Run backend Jest tests
+        run: npm test -- --runInBand --coverage
+        env:
+          NODE_ENV: test
+          JWT_SECRET: github-actions-test-secret-not-for-production
+
+      - name: Upload backend coverage
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-coverage
+          path: api/coverage/
+          if-no-files-found: ignore
+
+  frontend-tests:
+    name: Frontend Tests
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./client
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: client/package-lock.json
+
+      - name: Install frontend dependencies
+        run: npm ci
+
+      - name: Run frontend Jest tests
+        run: npm test -- --runInBand --coverage --watch=false
+        env:
+          CI: "true"
+
+      - name: Upload frontend coverage
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: client-coverage
+          path: client/coverage/
+          if-no-files-found: ignore
+
+  grade:
+    name: University Autograder
+    needs:
+      - backend-tests
+      - frontend-tests
+
+    uses: EMWCCN/classroom50/.github/workflows/autograde-runner.yaml@main
+
+    permissions:
+      contents: write
+      statuses: write
+      pull-requests: write

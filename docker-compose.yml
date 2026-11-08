@@ -44,7 +44,9 @@ services:
     networks:
       - hustlehub-net
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost/"]
+      # 127.0.0.1, not localhost: Alpine resolves localhost to IPv6 first,
+      # but Nginx only listens on IPv4
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://127.0.0.1/"]
       interval: 30s
       timeout: 5s
       retries: 3

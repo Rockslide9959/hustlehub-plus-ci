@@ -3,6 +3,7 @@ const Booking = require("../models/Booking");
 const Transaction = require("../models/Transaction");
 const Gig = require("../models/Gig");
 const logger = require('../utils/logger');
+const { currentUserId } = require('../utils/currentUser');
 
 // Create a new booking
 const createBooking = async (req, res) => {
@@ -112,7 +113,7 @@ const createBooking = async (req, res) => {
 // Get bookings for the logged-in client
 const getClientBookings = async (req, res) => {
     try {
-        const bookings = await Booking.find({ client: req.user.id })
+        const bookings = await Booking.find({ client: currentUserId(req) })
             .populate("gig")
             .populate("freelancer", "fullName email")
             .sort({ bookingDate: -1 });
@@ -133,7 +134,7 @@ const getClientBookings = async (req, res) => {
 //Get bookings received by the logged-in freelancer
 const getFreelancerBookings = async (req, res) => {
     try {
-        const bookings = await Booking.find({ freelancer: req.user.id })
+        const bookings = await Booking.find({ freelancer: currentUserId(req) })
             .populate("gig")
             .populate("client", "fullName email")
             .sort({ bookingDate: -1 });

@@ -97,7 +97,7 @@ describe("GET /api/bookings/my", () => {
     expect(response.body.bookings).toHaveLength(1);
 
     expect(Booking.find).toHaveBeenCalledWith({
-      client: CLIENT_ID,
+      client: new mongoose.Types.ObjectId(CLIENT_ID),
     });
 
     expect(query.populate).toHaveBeenCalledWith("gig");
@@ -193,7 +193,7 @@ describe("GET /api/bookings/freelancer/my", () => {
     expect(response.body.bookings).toHaveLength(2);
 
     expect(Booking.find).toHaveBeenCalledWith({
-      freelancer: FREELANCER_ID,
+      freelancer: new mongoose.Types.ObjectId(FREELANCER_ID),
     });
 
     expect(query.populate).toHaveBeenCalledWith("gig");

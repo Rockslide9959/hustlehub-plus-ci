@@ -57,7 +57,7 @@ export default function GigDetailPage() {
     setActionError('');
     try {
       await deleteGig(token, gig.id);
-      navigate(isOwner ? '/gigs/mine' : '/gigs', { replace: true, state: { message: 'Gig deleted.' } });
+      void navigate(isOwner ? '/gigs/mine' : '/gigs', { replace: true, state: { message: 'Gig deleted.' } });
     } catch (err) {
       setActionError(err.message);
       setBusy(false);

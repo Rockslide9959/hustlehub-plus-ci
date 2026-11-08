@@ -21,7 +21,9 @@ const bookingRoutes = require('./routes/bookingRoutes');
 const transactionRoutes = require('./routes/transactionRoutes');
 const { notFound, errorHandler } = require('./middleware/errorHandler');
 
-connectDb();
+// connectDb handles its own errors (it logs and exits), so the promise is
+// deliberately not awaited here
+void connectDb();
 
 const app = express();
 const PORT = process.env.PORT || 4000;

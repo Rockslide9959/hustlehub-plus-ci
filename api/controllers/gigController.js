@@ -2,6 +2,7 @@ const { matchedData } = require('express-validator');
 const Gig = require('../models/Gig');
 const { isGigOwner } = require('../middleware/gigOwnership');
 const { serializeGig, buildPagination } = require('../utils/gigSerializer');
+const { currentUserId } = require('../utils/currentUser');
 
 const DEFAULT_PAGE = 1; 
 const DEFAULT_LIMIT = 12;
@@ -69,7 +70,7 @@ const listMyGigs = async (req, res, next) => {
         const page = params.page || DEFAULT_PAGE;
         const limit = params.limit || DEFAULT_LIMIT;
 
-        const filter = { freelancer: req.user.id };
+        const filter = { freelancer: currentUserId(req) };
 
         const [gigs, total] = await Promise.all([
         Gig.find(filter)

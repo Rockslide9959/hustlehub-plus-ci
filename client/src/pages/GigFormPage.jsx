@@ -20,7 +20,7 @@ function CreateGig() {
 
   async function handleCreate(gig) {
     const result = await createGig(token, gig);
-    navigate(`/gigs/${result.data.id}`, { replace: true });
+    void navigate(`/gigs/${result.data.id}`, { replace: true });
   }
 
   return (
@@ -56,7 +56,7 @@ function EditGig({ id }) {
 
   async function handleUpdate(changes) {
     await updateGig(token, id, changes);
-    navigate(`/gigs/${id}`, { replace: true });
+    void navigate(`/gigs/${id}`, { replace: true });
   }
 
   const initialValues = {

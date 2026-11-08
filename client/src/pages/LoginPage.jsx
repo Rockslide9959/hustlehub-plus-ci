@@ -87,7 +87,7 @@ export default function LoginPage() {
   // Return the user to the page they originally wanted, or home.
   function goToNextPage() {
     const redirectTo = location.state?.from?.pathname || '/';
-    navigate(redirectTo, { replace: true });
+    void navigate(redirectTo, { replace: true });
   }
 
   // Locked: the countdown replaces the plain error message, and the user
@@ -155,7 +155,6 @@ export default function LoginPage() {
               inputMode="numeric"
               autoComplete="one-time-code"
               maxLength={6}
-              autoFocus
               value={code}
               onChange={(event) => setCode(cleanCode(event.target.value))}
             />

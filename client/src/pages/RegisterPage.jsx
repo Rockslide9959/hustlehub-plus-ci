@@ -43,7 +43,7 @@ export default function RegisterPage() {
         password: form.password,
         role: form.role,
       });
-      navigate('/login', { replace: true, state: { registered: true } });
+      void navigate('/login', { replace: true, state: { registered: true } });
     } catch (error) {
       setFormError(error.message);
     } finally {

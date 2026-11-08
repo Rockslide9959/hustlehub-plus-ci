@@ -6,7 +6,9 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 
 # Only production deps — jest, nodemon, newman etc. are not needed at runtime
-RUN npm ci --omit=dev && npm cache clean --force
+# --ignore-scripts: packages may not run their own install scripts (supply-chain
+# safety); none of our production dependencies need one
+RUN npm ci --omit=dev --ignore-scripts && npm cache clean --force
 
 
 # -------- Stage 2: runtime image --------
@@ -20,8 +22,17 @@ WORKDIR /app
 # Bring in the installed production dependencies
 COPY --from=deps /app/node_modules ./node_modules
 
-# Copy the rest of the application source
-COPY --chown=hustle:hustle . .
+# Copy only the application source, folder by folder, instead of "COPY . .",
+# so nothing unexpected (an .env, keys, test files) can end up in the image
+COPY --chown=hustle:hustle package.json server.js ./
+COPY --chown=hustle:hustle config ./config
+COPY --chown=hustle:hustle controllers ./controllers
+COPY --chown=hustle:hustle middleware ./middleware
+COPY --chown=hustle:hustle models ./models
+COPY --chown=hustle:hustle routes ./routes
+COPY --chown=hustle:hustle scripts ./scripts
+COPY --chown=hustle:hustle services ./services
+COPY --chown=hustle:hustle utils ./utils
 
 # Expose the HTTP port the container will listen on
 ENV NODE_ENV=production

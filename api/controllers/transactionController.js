@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Transaction = require("../models/Transaction");
 const logger = require("../utils/logger");
+const { currentUserId } = require("../utils/currentUser");
 const {
   TAX_YEAR_END_YEAR,
   getTaxYearRange,
@@ -12,7 +13,7 @@ const {
 // Get all transactions for the logged-in freelancer
 const getFreelancerTransactions = async (req, res) => {
   try {
-    const transactions = await Transaction.find({ freelancer: req.user.id })
+    const transactions = await Transaction.find({ freelancer: currentUserId(req) })
       .populate("gig")
       .populate("client", "fullName email")
       .populate("booking")

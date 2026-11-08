@@ -63,7 +63,7 @@ describe("GET /api/transactions/my", () => {
     expect(response.body.transactions).toHaveLength(2);
 
     expect(Transaction.find).toHaveBeenCalledWith({
-      freelancer: FREELANCER_ID,
+      freelancer: new mongoose.Types.ObjectId(FREELANCER_ID),
     });
 
     expect(query.populate).toHaveBeenCalledTimes(3);

@@ -1,99 +1,148 @@
+HustleHub+ frontend test evidence (Jest + React Testing Library)
+Generated 2026-11-08 20:47 UTC from the current code with: npm run test:evidence
 
-> client@0.0.0 test:evidence
-> jest --verbose --reporters=default
-
-PASS src/pages/IncomePage.test.jsx
-  IncomePage
-    ΓêÜ shows the total income and each transaction (480 ms)
-    ΓêÜ explains when there is no income yet (63 ms)
-
-PASS src/pages/BookingsPage.test.jsx
-  BookingsPage
-    ΓêÜ a client sees the gigs they booked and who provides them (441 ms)
-    ΓêÜ a freelancer sees bookings of their gigs, using the freelancer endpoint (91 ms)
-    ΓêÜ explains when there are no bookings yet (60 ms)
-
-PASS src/api/client.test.js
-  apiRequest
-    ΓêÜ sends the token as a Bearer Authorization header (2 ms)
-    ΓêÜ returns the parsed JSON on success (6 ms)
-    ΓêÜ shows user-facing validation messages from the API (7 ms)
-    ΓêÜ never shows raw server error text for a 500 (2 ms)
-    ΓêÜ hides technical validation details (1 ms)
-    ΓêÜ treats a 401 on an authenticated request as an expired session (2 ms)
-    ΓêÜ explains rate limiting (429) (1 ms)
-    ΓêÜ handles the server being unreachable (1 ms)
-
-PASS src/pages/GigsPage.test.jsx
-  GigsPage
-    ΓêÜ shows the gigs returned by the API (373 ms)
-    ΓêÜ sends the search, category and sort to the API (520 ms)
-    ΓêÜ says so when nothing matches (153 ms)
-
-PASS src/pages/GigDetailPage.test.jsx
-  GigDetailPage
-    ΓêÜ a client can book a gig, which records a transaction (494 ms)
-    ΓêÜ shows the rate-limit message when booking too often (133 ms)
-    ΓêÜ the owner sees Edit and Delete but cannot book their own gig (86 ms)
-    ΓêÜ another freelancer cannot edit, delete or book someone else's gig (63 ms)
-    ΓêÜ the owner can delete their gig after confirming (222 ms)
-    ΓêÜ shows a friendly message when the gig does not exist (53 ms)
-
-PASS src/utils/validation.test.js
-  validateLogin
-    ΓêÜ requires email and password (1 ms)
-    ΓêÜ rejects a badly formatted email (1 ms)
-    ΓêÜ accepts valid input (1 ms)
-  getPasswordProblem
-    ΓêÜ rejects "Ab1" (1 ms)
-    ΓêÜ rejects "lowercase123" (1 ms)
-    ΓêÜ rejects "UPPERCASE123"
-    ΓêÜ rejects "NoNumbersHere" (1 ms)
-    ΓêÜ accepts a password that meets every rule (1 ms)
-  validateRegistration
-    ΓêÜ accepts valid input (1 ms)
-    ΓêÜ rejects mismatched passwords (1 ms)
-    ΓêÜ does not allow registering as admin (1 ms)
-    ΓêÜ rejects names longer than the database allows (3 ms)
-
-PASS src/pages/LoginPage.test.jsx (5.357 s)
+PASS src/pages/LoginPage.test.jsx (7.065 s)
   LoginPage
-    ΓêÜ renders the email field, password field and submit button (377 ms)
-    ΓêÜ shows validation errors and does not call the API when submitted empty (156 ms)
-    ΓêÜ logs in and shows the dashboard (754 ms)
-    ΓêÜ shows a friendly message when the credentials are wrong (624 ms)
+    ✓ renders the email field, password field and submit button (199 ms)
+    ✓ shows validation errors and does not call the API when submitted empty (90 ms)
+    ✓ logs in and shows the dashboard (333 ms)
+    ✓ shows a friendly message when the credentials are wrong (271 ms)
+    ✓ shows a lockout countdown and disables the button when the account is locked (266 ms)
+    ✓ unlocks the form again when the lockout countdown ends (1255 ms)
+  LoginPage with two-factor authentication
+    ✓ asks for a code after the password instead of logging in (225 ms)
+    ✓ logs in with the correct code (327 ms)
+    ✓ shows a clear message for a wrong code and lets the user try again (340 ms)
+    ✓ goes back to the password step when the 5-minute challenge has expired (279 ms)
+    ✓ shows the lockout countdown after too many wrong codes (274 ms)
+    ✓ "Back to log in" returns to the password step with the password cleared (241 ms)
+
+PASS src/pages/GigFormPage.test.jsx
+  GigFormPage
+    ✓ checks the form before calling the API (375 ms)
+    ✓ creates a gig, sending the price as a number (820 ms)
+    ✓ shows field errors returned by the API (665 ms)
+    ✓ loads an existing gig for editing and saves the changes (101 ms)
+    ✓ refuses to edit another freelancer's gig (28 ms)
+
+PASS src/pages/RegisterPage.test.jsx
+  RegisterPage
+    ✓ only offers client and freelancer roles (59 ms)
+    ✓ explains a weak password without calling the API (454 ms)
+    ✓ sends the registration and redirects to log in (471 ms)
+    ✓ shows the API message when the email is already registered (406 ms)
+
+PASS src/components/TwoFactorSettings.test.jsx
+  TwoFactorSettings
+    ✓ shows that two-factor authentication is off (81 ms)
+    ✓ turning it on shows the QR code, the setup key and a code box (80 ms)
+    ✓ the code box only accepts up to 6 digits (121 ms)
+    ✓ confirming with a valid code turns two-factor authentication on (143 ms)
+    ✓ a wrong code shows an error and keeps the setup open (140 ms)
+    ✓ a short code is caught before calling the API (141 ms)
+    ✓ turning it off needs the password and a code (203 ms)
+    ✓ a wrong password when turning it off shows an error and does not log out (205 ms)
 
 PASS src/App.test.jsx
   role-based navigation
-    ΓêÜ a freelancer sees the freelancer menu (102 ms)
-    ΓêÜ a client does not see freelancer-only links (70 ms)
-    ΓêÜ logging out clears the session and returns to the login page (149 ms)
+    ✓ a freelancer sees the freelancer menu (46 ms)
+    ✓ a client does not see freelancer-only links (36 ms)
+    ✓ logging out clears the session and returns to the login page (63 ms)
   route protection
-    ΓêÜ a logged-out user is sent to the login page (20 ms)
-    ΓêÜ a client typing a freelancer-only address sees "Not allowed" (30 ms)
-    ΓêÜ a freelancer can open the income page (37 ms)
-    ΓêÜ a client cannot open the create-gig page (24 ms)
-    ΓêÜ an expired session is treated as logged out (23 ms)
-    ΓêÜ after logging in, the user returns to the page they first asked for (582 ms)
-    ΓêÜ an unknown address shows "Page not found" (19 ms)
+    ✓ a logged-out user is sent to the login page (21 ms)
+    ✓ a client typing a freelancer-only address sees "Not allowed" (21 ms)
+    ✓ a freelancer can open the income page (42 ms)
+    ✓ a client cannot open the create-gig page (28 ms)
+    ✓ an expired session is treated as logged out (21 ms)
+    ✓ after logging in, the user returns to the page they first asked for (307 ms)
+    ✓ an unknown address shows "Page not found" (30 ms)
 
-PASS src/pages/RegisterPage.test.jsx (7.349 s)
-  RegisterPage
-    ΓêÜ only offers client and freelancer roles (385 ms)
-    ΓêÜ explains a weak password without calling the API (1289 ms)
-    ΓêÜ sends the registration and redirects to log in (1086 ms)
-    ΓêÜ shows the API message when the email is already registered (1160 ms)
+PASS src/pages/GigsPage.test.jsx
+  GigsPage
+    ✓ shows the gigs returned by the API (201 ms)
+    ✓ sends the search, category and sort to the API (274 ms)
+    ✓ says so when nothing matches (45 ms)
 
-PASS src/pages/GigFormPage.test.jsx (8.399 s)
-  GigFormPage
-    ΓêÜ checks the form before calling the API (908 ms)
-    ΓêÜ creates a gig, sending the price as a number (1968 ms)
-    ΓêÜ shows field errors returned by the API (1839 ms)
-    ΓêÜ loads an existing gig for editing and saves the changes (233 ms)
-    ΓêÜ refuses to edit another freelancer's gig (33 ms)
+PASS src/pages/AdminPage.test.jsx
+  AdminPage
+    ✓ an admin sees every gig, including who owns it (73 ms)
+    ✓ shows the users tab without any password data (161 ms)
+    ✓ deleting a gig asks first, then calls the API and refreshes (183 ms)
+    ✓ cancelling the confirmation deletes nothing (181 ms)
+    ✓ a client is sent to the forbidden page (49 ms)
+    ✓ a freelancer is sent to the forbidden page (34 ms)
+    ✓ the admin menu link is only shown to admins (123 ms)
 
-Test Suites: 10 passed, 10 total
-Tests:       57 passed, 57 total
+PASS src/pages/GigDetailPage.test.jsx
+  GigDetailPage
+    ✓ a client can book a gig, which records a transaction (140 ms)
+    ✓ shows the rate-limit message when booking too often (69 ms)
+    ✓ the owner sees Edit and Delete but cannot book their own gig (55 ms)
+    ✓ another freelancer cannot edit, delete or book someone else's gig (41 ms)
+    ✓ the owner can delete their gig after confirming (66 ms)
+    ✓ shows a friendly message when the gig does not exist (42 ms)
+
+PASS src/pages/BookingsPage.test.jsx
+  BookingsPage
+    ✓ a client sees the gigs they booked and who provides them (128 ms)
+    ✓ a freelancer sees bookings of their gigs, using the freelancer endpoint (57 ms)
+    ✓ explains when there are no bookings yet (55 ms)
+
+PASS src/pages/IncomePage.test.jsx
+  IncomePage
+    ✓ shows the gross income and each transaction (123 ms)
+    ✓ explains when there is no income yet (27 ms)
+
+PASS src/components/charts.test.jsx
+  niceMax
+    ✓ rounds 0 up to 1 (2 ms)
+    ✓ rounds -5 up to 1 (1 ms)
+    ✓ rounds 0.7 up to 1 (1 ms)
+    ✓ rounds 1 up to 1 (1 ms)
+    ✓ rounds 1.1 up to 2 (1 ms)
+    ✓ rounds 3250.5 up to 5000
+    ✓ rounds 5000 up to 5000
+    ✓ rounds 5001 up to 10000
+    ✓ rounds 123456 up to 200000
+  MonthlyIncomeChart
+    ✓ draws one bar per tax-year month with a tooltip title (41 ms)
+    ✓ shows a message instead of a chart when there is no income (4 ms)
+    ✓ handles a missing monthly list (15 ms)
+  TaxBreakdownChart
+    ✓ shows 100% net and no tax segment when no tax is owed (10 ms)
+    ✓ shows net and tax percentages (9 ms)
+    ✓ shows a message when there is no income (6 ms)
+
+PASS src/api/client.test.js
+  apiRequest
+    ✓ sends the token as a Bearer Authorization header (2 ms)
+    ✓ returns the parsed JSON on success (2 ms)
+    ✓ shows user-facing validation messages from the API (2 ms)
+    ✓ never shows raw server error text for a 500 (2 ms)
+    ✓ hides technical validation details (1 ms)
+    ✓ treats a 401 on an authenticated request as an expired session (1 ms)
+    ✓ explains rate limiting (429) (1 ms)
+    ✓ handles the server being unreachable (2 ms)
+
+PASS src/utils/validation.test.js
+  validateLogin
+    ✓ requires email and password (2 ms)
+    ✓ rejects a badly formatted email (1 ms)
+    ✓ accepts valid input
+  getPasswordProblem
+    ✓ rejects "Ab1" (1 ms)
+    ✓ rejects "lowercase123" (1 ms)
+    ✓ rejects "UPPERCASE123" (1 ms)
+    ✓ rejects "NoNumbersHere" (1 ms)
+    ✓ accepts a password that meets every rule (1 ms)
+  validateRegistration
+    ✓ accepts valid input (1 ms)
+    ✓ rejects mismatched passwords (1 ms)
+    ✓ does not allow registering as admin (1 ms)
+    ✓ rejects names longer than the database allows
+
+Test Suites: 13 passed, 13 total
+Tests:       95 passed, 95 total
 Snapshots:   0 total
-Time:        10.355 s, estimated 32 s
+Time:        18.376 s
 Ran all test suites.

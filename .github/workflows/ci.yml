@@ -417,6 +417,15 @@ jobs:
           echo "GET /api/gigs through Nginx returned $code"
           [ "$code" = "200" ] || [ "$code" = "401" ]
 
+      - name: Smoke test, client security headers (CSP on pages and assets)
+        run: |
+          page_headers=$(curl -fsSI http://localhost:8080/)
+          echo "$page_headers" | grep -i "content-security-policy: default-src 'self'"
+          echo "$page_headers" | grep -i "x-frame-options: DENY"
+          asset=$(curl -fsS http://localhost:8080/ | grep -o '/assets/[^"]*\.js' | head -1)
+          echo "Checking $asset"
+          curl -fsSI "http://localhost:8080$asset" | grep -i "content-security-policy: default-src 'self'"
+
       - name: Smoke test, containers do not run as root
         run: |
           [ "$(docker exec hustlehub-api id -u)" != "0" ] || { echo "::error::API container runs as root"; exit 1; }
